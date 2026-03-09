@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Privacy Photo Editor</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Privacy Photo Editor</h1>
+        <p>Замазывай, пикселизируй, вырезай и экспортируй без EXIF.</p>
+      </div>
+      <button id="installBtn" class="ghost hidden" type="button">Установить</button>
+    </header>
+
+    <main class="layout">
+      <section class="editor-card stage-card">
+        <div class="stage-toolbar compact-scroll">
+          <button id="loadBtn" class="primary" type="button">Загрузить фото</button>
+          <button id="cameraBtn" type="button">Сделать фото</button>
+          <button id="resetBtn" type="button" disabled>Сброс</button>
+          <button id="downloadBtn" type="button" disabled>Скачать</button>
+          <button id="downloadCleanBtn" type="button" disabled>Скачать clean JPEG</button>
+          <input id="fileInput" type="file" accept="image/*" capture="environment" hidden />
+        </div>
+
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="canvas"></canvas>
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🛡️</div>
+            <h2>Безопасный редактор фото</h2>
+            <p>Загрузи изображение или сделай снимок. Финальный файл экспортируется заново через canvas без исходного EXIF.</p>
+          </div>
+        </div>
+
+        <div class="hintbar" id="hintBar">Выбери инструмент и выдели область пальцем.</div>
+      </section>
+
+      <aside class="editor-card controls-card">
+        <section>
+          <h2>Инструменты</h2>
+          <div class="tool-grid">
+            <button class="tool active" data-tool="blur" type="button">Blur</button>
+            <button class="tool" data-tool="pixelate" type="button">Pixelate</button>
+            <button class="tool" data-tool="blackout" type="button">Blackout</button>
+            <button class="tool" data-tool="crop" type="button">Crop</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Параметры</h2>
+          <label class="field">
+            <span>Сила эффекта</span>
+            <input id="strengthRange" type="range" min="4" max="60" value="18" />
+            <small id="strengthValue">18</small>
+          </label>
+
+          <label class="field">
+            <span>Формат экспорта</span>
+            <select id="formatSelect">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WEBP</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Качество</span>
+            <input id="qualityRange" type="range" min="0.4" max="1" step="0.05" value="0.92" />
+            <small id="qualityValue">0.92</small>
+          </label>
+        </section>
+
+        <section>
+          <h2>Действия</h2>
+          <div class="action-grid">
+            <button id="undoBtn" type="button" disabled>Отменить</button>
+            <button id="rotateBtn" type="button" disabled>Повернуть 90°</button>
+            <button id="fitBtn" type="button" disabled>Вместить</button>
+            <button id="fillBtn" type="button" disabled>Заполнить</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Статус</h2>
+          <div class="status-list">
+            <div class="status-item"><span>Размер</span><strong id="imageSize">—</strong></div>
+            <div class="status-item"><span>Экспорт</span><strong id="exportInfo">—</strong></div>
+            <div class="status-item"><span>EXIF</span><strong id="exifInfo">Будет удалён при экспорте</strong></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
